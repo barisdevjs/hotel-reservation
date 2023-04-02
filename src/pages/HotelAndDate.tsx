@@ -20,8 +20,8 @@ function HotelAndDate({ data, setData, updateFields }: HotelProps) {
 
   return (
     <Row gutter={[32, 32]} justify="space-between">
-      <Col>
-        <Form.Item
+      <Col >
+        <Form.Item style={{minWidth:'10rem'}}
           name="hotel_name"
           label="Select Hotel"
           rules={[{ required: true }]}

@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 
 type StepT = {
-    title: string
+    title: React.ReactNode
     content: ReactElement
 }
 

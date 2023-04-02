@@ -1,83 +1,114 @@
-import { Avatar, Card, Col, Form, Radio, Row, Divider, Space, Typography } from 'antd'
-import  { useMemo } from 'react';
+import { Card, Col, Form, Radio, Row, Divider, Space, Typography, RadioChangeEvent } from 'antd'
+import { useEffect, useMemo, useState } from 'react';
 import { HotelProps, RoomI } from '../utils/types';
-import { Dayjs } from 'dayjs';
+import { ScenicI } from '../utils/types';
+import { calculateDays, formatCurrency } from '../utils/helpers';
 const { Meta } = Card;
 
 
 function RoomType({ data, setData, updateFields }: HotelProps) {
+
     let rooms: RoomI[] = [];
 
     if (Array.isArray(data.room_type)) {
         rooms = data.room_type;
     }
 
-    const onChange1 = (e: any) => {
+    const onRoomChange = (e: any) => {
         const room = rooms.find(room => room.id === e.target.value);
-        updateFields({ selectedRoom: room });
+        const total_price = calculatePrice(room as RoomI, totalDays, { parents: data.parents, children: data.children as number, selected_scene: data.selected_scene });
+        setData({ ...data, total_price: total_price });
+        updateFields({ selectedRoom: room, total_price: total_price });
     };
-
-    function calculateDays(start: Dayjs, end: Dayjs): number {
-        return end.diff(start, 'day')
-    }
 
     const totalDays = useMemo(() => calculateDays(data.startDate, data.endDate), [data.startDate, data.endDate]);
 
-    function calculatePrice(room: RoomI, totalDays: number, data: { parents: number, children?: number }) {
-        const price = room.price * totalDays * data.parents * (data.children ?? 1);
-        return new Intl.NumberFormat('tr', { style: 'currency', currency: 'TRY' }).format(price);
+    function calculatePrice(room: RoomI, totalDays: number, data: { parents: number, children?: number, selected_scene: ScenicI }) {
+        const price = room.price * totalDays * data.parents * (data.children ?? 1) * (1 + data.selected_scene.price_rate / 100);
+
+        return price;
     }
 
+    let scenes: ScenicI[] = [];
+
+    if (Array.isArray(data.room_scenic)) {
+        scenes = data.room_scenic;
+    }
+
+    function onSceneChange(e: any) {
+        const scene = scenes.find(room => room.id === e.target.value);
+        const total_price = data.total_price * (scene?.price_rate as number + 1)
+        setData({ ...data, total_price: total_price });
+        updateFields({ selected_scene: scene });
+    }
 
     return (
-        <Form.Item label="Room Type Selection" className='font-label' style={{ marginInline: 'auto' }}>
-            <Radio.Group onChange={onChange1}>
-                <Row gutter={[64, 32]} align='top' justify='space-evenly' style={{ marginInline: 'auto' }}>
-                    {rooms.map((room: RoomI) =>
-                        <Col key={room.id}>
-                            <Radio value={room.id} >
-                                <Card title={room.title} bordered={false} size='small'
-                                    style={{
-                                        width: 300, boxShadow: data.selectedRoom.id === room.id ? '0 0 5px 3px rgba(0, 0, 0, 0.2)' : 'none'
-                                    }}
-                                    hoverable
-                                    cover={
-                                        <img
-                                            alt={room.title}
-                                            src={room.photo}
+        <>
+            <Form.Item label="Room Type Selection" className='font-label' style={{ marginInline: 'auto' }}>
+                <Radio.Group onChange={onRoomChange}>
+                    <Row gutter={[64, 32]} align='top' justify='space-evenly' style={{ marginInline: 'auto' }}>
+                        {rooms.map((room: RoomI) =>
+                            <Col key={room.id}>
+                                <Radio value={room.id} >
+                                    <Card title={room.title} bordered={false} size='small'
+                                        style={{
+                                            width: 300, boxShadow: data.selectedRoom?.id === room.id ? '0 0 5px 3px rgba(0, 0, 0, 0.2)' : 'none'
+                                        }}
+                                        hoverable
+                                        cover={
+                                            <img
+                                                alt={room.title}
+                                                src={room.photo}
+                                            />
+                                        }>
+                                        <Row align='top' justify='space-between' style={{ width: '100%' }}>
+                                            <Col>
+                                                <Typography.Text strong>{data.parents}</Typography.Text>
+                                                &nbsp;
+                                                <Typography.Text type='secondary'>adults</Typography.Text> </Col>
+                                            {data.children && <Col>
+                                                <Typography.Text strong>{data.children}</Typography.Text>
+                                                &nbsp;
+                                                <Typography.Text type='secondary'>children</Typography.Text>
+                                            </Col>}
+                                            <Col>
+                                                <Typography.Text strong>{totalDays}</Typography.Text>&nbsp;
+                                                <Typography.Text type='secondary'>days</Typography.Text>
+                                            </Col>
+                                        </Row>
+                                        <Divider dashed>Details</Divider>
+                                        <Meta
+                                            title={<Row justify='space-between'>
+                                                <Col>Total</Col>
+                                                <Col>{formatCurrency(calculatePrice(room, totalDays, { parents: data.parents, children: data.children || 1, selected_scene: data.selected_scene }))}</Col>
+                                            </Row>}
+                                            description={room.description}
                                         />
-                                    }>
-                                    <Row align='top' justify='space-between' style={{ width: '100%' }}>
-                                        <Col>
-                                            <Typography.Text strong>{data.parents}</Typography.Text>
-                                            &nbsp;
-                                            <Typography.Text type='secondary'>adults</Typography.Text> </Col>
-                                        {data.children && <Col>
-                                            <Typography.Text strong>{data.children}</Typography.Text>
-                                            &nbsp;
-                                            <Typography.Text type='secondary'>children</Typography.Text>
-                                        </Col>}
-                                        <Col>
-                                            <Typography.Text strong>{totalDays}</Typography.Text>&nbsp;
-                                            <Typography.Text type='secondary'>days</Typography.Text>
-                                        </Col>
-                                    </Row>
-                                    <Divider dashed>Details</Divider>
-                                    <Meta
-                                        title={<Row justify='space-between'>
-                                            <Col>Total</Col>
-                                            <Col>{calculatePrice(room, totalDays, { parents: data.parents, children: data.children || 0 })}</Col>
-                                        </Row>}
-                                        description={room.description}
-                                    />
 
-                                </Card>
-                            </Radio>
-                        </Col>
-                    )}
+                                    </Card>
+                                </Radio>
+                            </Col>
+                        )}
+                    </Row>
+                </Radio.Group>
+            </Form.Item>
+            <Form.Item label="Room Scene Selection" className='font-label' style={{ marginInline: 'auto' }}>
+                <Row gutter={[64, 32]} align='middle' justify='space-around' style={{ marginInline: 'auto' }}>
+                    <Radio.Group onChange={onSceneChange} buttonStyle="solid">
+                        {scenes.map((scene: ScenicI) =>
+                            <Radio.Button key={scene.id} value={scene.id}>
+                                <h5 style={{ display: 'flex', justifyContent: 'center' }}>
+                                    {scene.title}
+                                </h5>
+                                <Typography.Text>
+                                    Affection Rate &nbsp;  {scene.price_rate}%
+                                </Typography.Text>
+                            </Radio.Button>
+                        )}
+                    </Radio.Group>
                 </Row>
-            </Radio.Group>
-        </Form.Item>
+            </Form.Item >
+        </>
     )
 }
 

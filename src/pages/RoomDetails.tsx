@@ -1,4 +1,4 @@
-import { Row, Col, InputNumber, Typography } from "antd"
+import { Row, Col, InputNumber, Typography, Space, Divider } from "antd"
 import { Form, Select } from 'antd';
 import { useGetHotelList } from "../services/Services";
 import { DatePicker } from 'antd';
@@ -6,34 +6,45 @@ import * as dayjs from 'dayjs'
 import { FormT, HotelProps } from "../utils/types";
 import { Dayjs } from 'dayjs';
 import '../App.css';
+import RoomType from "../components/RoomType";
 
 
 function RoomDetails({ data, setData, updateFields }: HotelProps) {
 
-  console.log(data)
+  function updateForm(fields: Partial<FormT>): void {
+    setData(prev => {
+      return { ...prev, ...fields }
+    })
+  }
+
   return (
-    <Row gutter={[32,32]} align='bottom' justify='space-around' className="customRow">
-      <Col>
-        <Typography.Title level={5}>{data.hotel_name}</Typography.Title>
-        <Typography.Text>{data.city}</Typography.Text>
-      </Col>
-      <Col>
-        <Typography.Title level={5}>Start Date</Typography.Title>
-        <Typography.Text>{data.startDate.format('DD MMMM YYYY')}</Typography.Text>
-      </Col>
-      <Col>
-        <Typography.Title level={5}>End Date</Typography.Title>
-        <Typography.Text>{data.endDate.format('DD MMMM YYYY')}</Typography.Text>
-      </Col>
-      <Col>
-      <Typography.Title level={5}>Adults</Typography.Title>
-        <Typography.Text>{data.parents}</Typography.Text>
-      </Col>
-      <Col>
-      <Typography.Title level={5}>Children</Typography.Title>
-        <Typography.Text>{data.children}</Typography.Text>
-      </Col>
-    </Row>
+    <Space direction="vertical" size="large" className="flex justify-center items-stretch">
+      <Row gutter={[32, 32]} align='bottom' justify='space-around' className="customRow">
+        <Col>
+          <Typography.Title level={5}>{data.hotel_name}</Typography.Title>
+          <Typography.Text>{data.city}</Typography.Text>
+        </Col>
+        <Col >
+          <Typography.Title level={5}>Start Date</Typography.Title>
+          <Typography.Text>{data.startDate.format('DD MMMM YYYY')}</Typography.Text>
+        </Col>
+        <Col>
+          <Typography.Title level={5}>End Date</Typography.Title>
+          <Typography.Text>{data.endDate.format('DD MMMM YYYY')}</Typography.Text>
+        </Col>
+        <Col>
+          <Typography.Title level={5}>Adults</Typography.Title>
+          <Typography.Text>{data.parents}</Typography.Text>
+        </Col>
+        {(data.child_status && data.children as number > 0) &&
+          <Col>
+            <Typography.Title level={5}>Children</Typography.Title>
+            <Typography.Text>{data.children}</Typography.Text>
+          </Col>
+        }
+      </Row>
+        <RoomType data={data} setData={setData} updateFields={updateForm} />
+    </Space>
   )
 }
 

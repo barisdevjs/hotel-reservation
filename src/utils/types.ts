@@ -48,10 +48,11 @@ export type FormT = {
     children?:number | null
     city?: string
     possibilities?: string[]
-    room_type: RoomI[]
-    room_scenic: ScenicI[]
+    room_type: RoomI | RoomI[]
+    room_scenic: ScenicI | ScenicI[]
     selectedRoom : RoomI
     selected_scene : ScenicI
+    total_price: number
   }
 
 export type HotelT = {

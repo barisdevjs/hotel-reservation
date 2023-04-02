@@ -1,71 +1,96 @@
-import HotelAndDate from "./HotelAndDate";
-import { Steps, message, Form } from 'antd'
+import HotelAndDate from "./pages/HotelAndDate";
+import { Steps, message, Form, Typography } from 'antd'
 import Button from 'antd/es/button';
-import RoomDetails from "./RoomDetails";
+import RoomDetails from "./pages/RoomDetails";
 import Payment from "./Payment";
-import './index.css'
+import './index.css';
 import { useNavigation } from "./useNavigation";
 import { useEffect, useState } from "react";
 import { useSessionStorage } from "./useSessionStorage";
 import dayjs, { Dayjs } from 'dayjs';
-
-export type FormT = {
-    hotel_name: string
-    startDate: Dayjs
-    endDate?: Dayjs
-    parents: number
-    children: number
-  }
+import { FormT, initialRoom, initialScenic } from "./utils/types";
+import { useGetHotelById } from "./services/Services";
 
 
 const initialData: FormT = JSON.parse(sessionStorage.getItem('formData') as string) || {
+    id:'',
     hotel_name: '',
+    hotel_id:0,
     startDate: dayjs(),
-    endDate: dayjs().add(2,'day'),
-    parents: 1,
-    children: 0
+    endDate: dayjs().add(2, 'day'),
+    max_adult_size: 0,
+    child_status:false,
+    children: null,
+    parents:0,
+    city:'',
+    possibilities:[],
+    room_type:[],
+    room_scenic:[],
+    selected_scene: initialScenic,
+    selectedRoom:initialRoom,
+    total_price:0
 };
 
-initialData.startDate = dayjs(initialData?.startDate)
+
+initialData.startDate = dayjs(initialData?.startDate);
+initialData.endDate = dayjs(initialData?.endDate);
 
 function Navigation() {
     const [data, setData] = useSessionStorage('formData',initialData);
+    const { hotelLoading, hotel, getHotel } = useGetHotelById();
     const [form] = Form.useForm();
+
     useEffect(() => {
         const storedData = JSON.parse(sessionStorage.getItem('formData') as string);
-        if (storedData?.startDate) {
-          storedData.startDate = dayjs(storedData.startDate);
-          setData(storedData);
-        }
+          storedData.startDate = dayjs(storedData?.startDate);
+          storedData.endDate = dayjs(storedData?.endDate);
+            setData(storedData || initialData);
       }, []);
 
-    // useEffect(() => {
-    //     setData(prevData => ({
-    //         ...prevData,
-    //         startDate: dayjs(prevData.startDate),
-    //       }));
-    // }, [data.startDate]);
-      
-      
-    console.log('SSS',data);
+      useEffect(() => {
+        data.id &&
+        getHotel(data.id)
+      }, [data.id,getHotel])
+
+      useEffect(() => {
+        if (hotel.id) {
+            const { hotel_id, child_status, city, possibilities, max_adult_size, room_type, room_scenic} = hotel;
+            const newData = {
+                ...data,
+                child_status,
+                city,
+                hotel_id: hotel_id,
+                possibilities:possibilities,
+                max_adult_size:max_adult_size,
+                room_type:room_type,
+                room_scenic:room_scenic,
+            }
+            setData(newData);
+            if ( newData.child_status === false) {
+                message.warning('This Hotel is not accepting childrens')
+            }
+        }
+      },[hotel.id])
+
+    //   console.log(hotel);
+
     const onFinish = async () => {
         const values = await form.validateFields();
         console.log(values);
     }
 
-
     var INITIAL_STEPS = [
         {
-            title: 'Hotel And Date',
+            title: <Typography.Title level={5}>Hotel And Date</Typography.Title >,
             content: <HotelAndDate data={data} setData={setData} updateFields={updateForm} />,
         },
         {
-            title: 'Room Details',
-            content: <RoomDetails />,
+            title:<Typography.Title level={5}>Room Details</Typography.Title >,
+            content: <RoomDetails data={data} setData={setData} updateFields={updateForm}/>,
         },
         {
-            title: 'Payment',
-            content: <Payment />,
+            title:<Typography.Title level={5}>Payment</Typography.Title >,
+            content: <Payment data={data} setData={setData} updateFields={updateForm} />,
         },
     ];
 
