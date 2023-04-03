@@ -2,7 +2,7 @@ import HotelAndDate from "./pages/HotelAndDate";
 import { Steps, message, Form, Typography } from 'antd'
 import Button from 'antd/es/button';
 import RoomDetails from "./pages/RoomDetails";
-import Payment from "./Payment";
+import Payment from "./pages/Payment";
 import './index.css';
 import { useNavigation } from "./useNavigation";
 import { useEffect, useState } from "react";
