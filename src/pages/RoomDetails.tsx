@@ -1,10 +1,5 @@
-import { Row, Col, InputNumber, Typography, Space, Divider } from "antd"
-import { Form, Select } from 'antd';
-import { useGetHotelList } from "../services/Services";
-import { DatePicker } from 'antd';
-import * as dayjs from 'dayjs'
+import { Row, Col, Typography, Space } from "antd"
 import { FormT, HotelProps } from "../utils/types";
-import { Dayjs } from 'dayjs';
 import '../App.css';
 import RoomType from "../components/RoomType";
 

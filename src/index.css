@@ -15,28 +15,25 @@ button.ant-btn.css-dev-only-do-not-override-ph9edi.ant-btn-primary {
     padding: 1rem;
 }
 
-element.style {
-    margin-left: 2rem;
-    font-weight: 500;
-}
 
 .font-label {
     font-weight: 500;
 }
 
 /* RoomType Card radio option display settings */
-:where(.css-dev-only-do-not-override-ph9edi).ant-radio-wrapper .ant-radio {
-    display: none;
+
+:where(.css-dev-only-do-not-override-1vtf12y).ant-radio-wrapper .ant-radio {
+    display: none !important;
 }
 
 
 /* RoomType Card image border radius */
-:where(.css-dev-only-do-not-override-ph9edi).ant-card .ant-card-cover img {
+:where(.css-dev-only-do-not-override-1vtf12y).ant-card .ant-card-cover img {
     border-radius:  0 0;
 }
 
 
-.ant-radio-group-solid :where(.css-dev-only-do-not-override-ph9edi).ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+.ant-radio-group-solid :where(.css-dev-only-do-not-override-1vtf12y).ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
     background: #1677ff;
     border-color: #1677ff;
     padding-inline: 2rem;
@@ -65,4 +62,13 @@ element.style {
 
 .rightGrid {
     background-color:yellowgreen;
+}
+
+
+/*********************************/
+
+:where(.css-dev-only-do-not-override-1vtf12y).ant-btn-primary {
+    color: #fff;
+    background-color: #1677ff !important;
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
 }

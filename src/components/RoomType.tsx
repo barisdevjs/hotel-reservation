@@ -1,5 +1,5 @@
-import { Card, Col, Form, Radio, Row, Divider, Space, Typography, RadioChangeEvent } from 'antd'
-import { useEffect, useMemo, useState } from 'react';
+import { Card, Col, Form, Radio, Row, Divider,  Typography, RadioChangeEvent } from 'antd'
+import { useMemo } from 'react';
 import { HotelProps, RoomI } from '../utils/types';
 import { ScenicI } from '../utils/types';
 import { calculateDays, formatCurrency } from '../utils/helpers';
@@ -14,8 +14,8 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
         rooms = data.room_type;
     }
 
-    const onRoomChange = (e: any) => {
-        const room = rooms.find(room => room.id === e.target.value);
+    const onRoomChange = (e: RadioChangeEvent) => {
+        const room = rooms.find(room => room.id === Number(e.target.value));
         const total_price = calculatePrice(room as RoomI, totalDays, { parents: data.parents, children: data.children as number, selected_scene: data.selected_scene });
         setData({ ...data, total_price: total_price });
         updateFields({ selectedRoom: room, total_price: total_price });
@@ -23,9 +23,10 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
 
     const totalDays = useMemo(() => calculateDays(data.startDate, data.endDate), [data.startDate, data.endDate]);
 
-    function calculatePrice(room: RoomI, totalDays: number, data: { parents: number, children?: number, selected_scene: ScenicI }) {
-        const price = room.price * totalDays * data.parents * (data.children ?? 1) * (1 + data.selected_scene.price_rate / 100);
-
+    function calculatePrice(room: RoomI, totalDays: number, 
+        data: { parents: number, children?: number, selected_scene: ScenicI}) {
+        const price = 
+        room.price * totalDays * data.parents * (data.children ?? 1) * (1 + data.selected_scene.price_rate / 100);
         return price;
     }
 
@@ -35,9 +36,9 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
         scenes = data.room_scenic;
     }
 
-    function onSceneChange(e: any) {
+    function onSceneChange(e: RadioChangeEvent) {
         const scene = scenes.find(room => room.id === e.target.value);
-        const total_price = data.total_price * (scene?.price_rate as number + 1)
+        const total_price = totalDays * data.parents * (data.children ?? 1) * (1 + scene!.price_rate / 100) * data.selectedRoom.price
         setData({ ...data, total_price: total_price });
         updateFields({ selected_scene: scene });
     }
@@ -94,7 +95,8 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
             </Form.Item>
             <Form.Item label="Room Scene Selection" className='font-label' style={{ marginInline: 'auto' }}>
                 <Row gutter={[64, 32]} align='middle' justify='space-around' style={{ marginInline: 'auto' }}>
-                    <Radio.Group onChange={onSceneChange} buttonStyle="solid">
+                    <Radio.Group onChange={onSceneChange} buttonStyle="solid"
+                    defaultValue={data.selected_scene.id}>
                         {scenes.map((scene: ScenicI) =>
                             <Radio.Button key={scene.id} value={scene.id}>
                                 <h5 style={{ display: 'flex', justifyContent: 'center' }}>

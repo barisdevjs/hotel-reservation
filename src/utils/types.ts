@@ -84,4 +84,9 @@ export type HotelT = {
     updateFields: (fields: Partial<FormT>) => void;
   }
 
-  
+  export interface ResultModalI {
+    title: string;
+    open: boolean;
+    handleOk: () => void;
+    handleCancel: () => void; 
+  }

@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
-import { HotelProps } from './utils/types';
-import { Card, Col, Row, Typography } from 'antd';
-import './App.css';
-import './index.css';
-import { calculateDays, formatCurrency } from './utils/helpers';
+import { HotelProps } from '../utils/types';
+import { Card, Col, Form, Row, Typography } from 'antd';
+import { calculateDays, formatCurrency } from '../utils/helpers';
+import '../App.css';
+import '../index.css';
+import CreditCard from '../components/CreditCard';
 
 const topCard: React.CSSProperties = {
   width: '33.333%',
@@ -23,19 +24,22 @@ function Payment({ data, setData, updateFields }: HotelProps) {
 
   const totalDays = useMemo(() => calculateDays(data.startDate, data.endDate), [data.startDate, data.endDate]);
 
-  const title = <Row gutter={[32,8]} align='stretch' justify='center'>
+  const title = <Row gutter={[32,8]} align='middle' justify='center'>
     <Col>
-      <Typography.Title level={5}>{data.hotel_name}</Typography.Title>
+      <Typography.Text strong>{data.hotel_name}</Typography.Text>
     </Col>
     <Col>
       <Typography.Text type="secondary">({data.city})</Typography.Text>
     </Col>
   </Row>
+
+
   return (
-    <Row className="m-4" gutter={[32, 32]} align='middle' justify='space-between'>
-      <Col style={{ border: '1px solid green' }}>sdsd</Col>
-      <Col style={{ border: '1px solid red' }}>
-        <Row>
+    <Row gutter={[32, 16]} align='middle' justify='space-between'>
+      <Col md={24} lg={12} xl={12}>
+        <CreditCard data={data}/>
+      </Col>
+      <Col md={24} lg={12} xl={12} >
           <Card title={title} size='small'>
             <Card.Grid style={topCard}>
               <Typography.Text strong >Start Date</Typography.Text>
@@ -62,10 +66,8 @@ function Payment({ data, setData, updateFields }: HotelProps) {
               <Typography>{data.selected_scene.title}</Typography>
             </Card.Grid>
           </Card>
-        </Row>
 
-        <Row className="mt-2 ">
-          <Card size='small' className='w-auto' >
+          <Card size='small' className='mt-2'>
             <Card.Grid style={bottomCard} className='flex justify-between'>
               <Typography.Text strong >Room Price</Typography.Text>
               <Typography>{data.selectedRoom.price}</Typography>
@@ -76,7 +78,7 @@ function Payment({ data, setData, updateFields }: HotelProps) {
             </Card.Grid>
             <Card.Grid style={bottomCard} className='flex justify-between'>
               <Typography.Text strong >Room Scene</Typography.Text>
-              <Typography>{data.selected_scene.price_rate} %</Typography>
+              <Typography>% {data.selected_scene.price_rate} </Typography>
             </Card.Grid>
             <Card.Grid style={bottomCard} className='flex justify-between'>
               <Typography.Text strong >Total Days</Typography.Text>
@@ -84,10 +86,9 @@ function Payment({ data, setData, updateFields }: HotelProps) {
             </Card.Grid>
             <Card.Grid style={bottomCard} className='flex justify-between'>
               <Typography.Text strong >Total </Typography.Text>
-              <Typography>{formatCurrency(data.total_price)}</Typography>
+              <Typography.Text strong>{formatCurrency(data.total_price)}</Typography.Text>
             </Card.Grid>
           </Card>
-        </Row>
       </Col>
     </Row>
   )

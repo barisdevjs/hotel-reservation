@@ -44,7 +44,7 @@ export function useGetHotelById() {
             setHotelLoading(true);
             const result = await fetch(HOTELDETAILS);
             const data = await result.json();
-            setHotel(data.find((hotel: any) => hotel.id === id));
+            setHotel(data.find((hotel: HotelT) => hotel.id === id));
 
         } catch (error) {
             console.log(error);
