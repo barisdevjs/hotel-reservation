@@ -40,31 +40,6 @@ button.ant-btn.css-dev-only-do-not-override-ph9edi.ant-btn-primary {
 }
 
 
-
-/******************************** Payment **********************************/
-
-.gridPayment {
-      --auto-grid-min-size: 32rem;
-    display: grid;
-    width: 100%;
-    background-color: rgb(185, 214, 214);
-    height: 300px;
-    grid-template-columns:   repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
-    gap: 2rem;
-}
-
-
-.leftGrid {
-    border-radius: .25rem;
-    background-color:gray;
-
-}
-
-.rightGrid {
-    background-color:yellowgreen;
-}
-
-
 /*********************************/
 
 :where(.css-dev-only-do-not-override-1vtf12y).ant-btn-primary {
@@ -72,3 +47,4 @@ button.ant-btn.css-dev-only-do-not-override-ph9edi.ant-btn-primary {
     background-color: #1677ff !important;
     box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
 }
+

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { HotelProps } from '../utils/types';
-import { Card, Col, Form, Row, Typography } from 'antd';
+import { Card, Col, Row, Typography, Watermark } from 'antd';
 import { calculateDays, formatCurrency } from '../utils/helpers';
 import '../App.css';
 import '../index.css';
@@ -35,9 +35,10 @@ function Payment({ data, setData, updateFields }: HotelProps) {
 
 
   return (
+    <Watermark content="Hotel SkyKing">
     <Row gutter={[32, 16]} align='middle' justify='space-between'>
       <Col md={24} lg={12} xl={12}>
-        <CreditCard data={data}/>
+        <CreditCard data={data} />
       </Col>
       <Col md={24} lg={12} xl={12} >
           <Card title={title} size='small'>
@@ -91,6 +92,7 @@ function Payment({ data, setData, updateFields }: HotelProps) {
           </Card>
       </Col>
     </Row>
+    </Watermark>
   )
 }
 

@@ -16,5 +16,10 @@ export function useSessionStorage<T>(key: string, initialValue: T | (() => T)){
         sessionStorage.setItem(key, JSON.stringify(value))
     }, [key,value])
 
-    return [ value, setValue ] as [ typeof value , typeof setValue ]
+    const resetValue = () => {
+        sessionStorage.setItem(key, JSON.stringify(initialValue));
+        setValue(initialValue);
+    };
+
+    return [ value, setValue, resetValue ] as [ typeof value , typeof setValue, typeof resetValue ]
 }

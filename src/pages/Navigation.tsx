@@ -1,4 +1,4 @@
-import { Steps, message, Form, Typography, Result } from 'antd'
+import { Steps, message, Form, Typography } from 'antd'
 import { Button } from 'antd';
 import RoomDetails from "./RoomDetails";
 import Payment from "./Payment";
@@ -9,8 +9,9 @@ import HotelAndDate from './HotelAndDate';
 import { FormT, ResultModalI, initialRoom, initialScenic } from '../utils/types';
 import { useSessionStorage } from '../services/useSessionStorage';
 import { useGetHotelById } from '../services/Services';
+import ResultPage from './ResultPage';
 import '../index.css';
-
+import { initialCart } from '../components/CreditCard';
 
 const initialData: FormT = JSON.parse(sessionStorage.getItem('formData') as string) || {
     id: '',
@@ -36,10 +37,15 @@ initialData.startDate = dayjs(initialData?.startDate);
 initialData.endDate = dayjs(initialData?.endDate);
 
 function Navigation() {
-    const [data, setData] = useSessionStorage('formData', initialData);
-    const { hotelLoading, hotel, getHotel } = useGetHotelById();
+    const [data, setData, resetValue] = useSessionStorage('formData', initialData);
+    const { hotel, getHotel } = useGetHotelById();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = Form.useForm();
+
+  const [cardState, setCardState, reset] = useSessionStorage('cartData',initialCart);
+
+  // reset the card based on SessionStorage
+
 
     useEffect(() => {
         const storedData = JSON.parse(sessionStorage.getItem('formData') as string);
@@ -75,7 +81,7 @@ function Navigation() {
 
 
     const onFinish = async () => {
-        const values = await form.validateFields();
+        const values = await form.validateFields(Object.keys(initialData));
         console.log(values);
     }
 
@@ -94,7 +100,7 @@ function Navigation() {
         },
     ];
 
-    const { current, step, steps, next, prev, goTo, isFirstStep, isLastStep } = useNavigation(INITIAL_STEPS)
+    const { current, steps, next, prev, goTo, isFirstStep, isLastStep } = useNavigation(INITIAL_STEPS)
     const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
     function updateForm(fields: Partial<FormT>): void {
@@ -113,25 +119,27 @@ function Navigation() {
 
     const handleOk = () => {
         setIsModalOpen(false);
+        resetValue();
+        form.resetFields();
+        goTo(0);
     };
 
     const handleCancel = () => {
+        onFinish();
         setIsModalOpen(false);
     };
 
-    const resultProps: any = {
-        title: 'My Title',
-        visible: isModalOpen,
+    const resultProps: ResultModalI = {
+        open: isModalOpen,
         handleOk: handleOk,
         handleCancel: handleCancel,
       };
-      
 
 
     return (
         <div className=" mx-auto flex max-w-7xl  p-6 lg:px-8" style={{ flexDirection: 'column', rowGap: '2rem' }}>
             <Steps current={current} items={items} labelPlacement='vertical'></Steps>
-            <Form layout="vertical" initialValues={initialData} onFinish={onFinish} >
+            <Form layout="vertical" initialValues={initialData} onFinish={onFinish} form={form} >
                 {steps[current].content}
             </Form>
             <div className="flex items-center justify-between">
@@ -147,7 +155,7 @@ function Navigation() {
                     </Button>
                 )}
             </div>
-                <Result {...resultProps} />
+                    <ResultPage  {...resultProps} />
         </div>
     )
 }

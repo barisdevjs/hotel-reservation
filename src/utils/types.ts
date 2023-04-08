@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import  { Dayjs } from 'dayjs';
 
 
 export interface HotelListI  {
@@ -85,7 +85,6 @@ export type HotelT = {
   }
 
   export interface ResultModalI {
-    title: string;
     open: boolean;
     handleOk: () => void;
     handleCancel: () => void; 
