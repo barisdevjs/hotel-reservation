@@ -13,12 +13,11 @@ function ResultPage({ open, handleOk, handleCancel }: ResultModalI ) {
         <Button key="back" onClick={handleCancel}>
           Update
         </Button>,
-        <Button key="delete" type="primary" htmlType='button' onClick={handleOk}>
+        <Button key="delete"  htmlType='button' onClick={handleOk}>
           Delete
         </Button>,
         <Button
           key="new"
-          type="primary"
           onClick={handleOk}
         >
           Book a new one
