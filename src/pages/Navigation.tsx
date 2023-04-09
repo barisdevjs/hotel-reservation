@@ -150,12 +150,11 @@ function Navigation() {
         setIsModalOpen(true);
     };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
+    const handleOk =  () => {
+        form.resetFields(Object.keys(initialData));
         resetValue('formData');
         resetCart('cartData');
-        onFinish();
-        form.resetFields();
+        setIsModalOpen(false);
         goTo(0);
     };
 
@@ -175,8 +174,8 @@ function Navigation() {
     return (
         <div className=" mx-auto flex max-w-7xl  p-6 lg:px-8" style={{ flexDirection: 'column', rowGap: '2rem' }}>
             <Steps current={current} items={items} labelPlacement='vertical'></Steps>
-            <Form layout="vertical" initialValues={initialData} onFinish={onFinish} form={form}
-                onFinishFailed={onFinishFailed}>
+            <Form layout="vertical" initialValues={{remember: false}} onFinish={onFinish} form={form}
+                onFinishFailed={onFinishFailed} >
                 {steps[current].content}
             </Form>
             <div className="flex items-center justify-between">
