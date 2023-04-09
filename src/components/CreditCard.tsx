@@ -4,6 +4,8 @@ import { FormT } from '../utils/types';
 import { useSessionStorage } from '../services/useSessionStorage';
 import '../index.css';
 import './Card.css';
+import visaCard from '../assets/Visa-Payment-Card.svg'
+import creditCardChip from '../assets/credit-card-chip.svg';
 
 interface CardI {
   digits: string
@@ -66,7 +68,7 @@ function CreditCard({ data }: { data: FormT }) {
               <div className="shape"><span className="txt">PB</span></div> <span className="text">Public Bank of Turkey</span>
             </div>
           </header>
-          <div className="mk-icon-sim flex items-center"><img src='/src/assets/credit-card-chip.svg' width='100%' /></div>
+          <div className="mk-icon-sim flex items-center"><img src={creditCardChip} width='100%' /></div>
           <div className="credit-font credit-card-number" data-text={cardState.digits.slice(0, 4)}>
             <input value={cardState.digits} type='text' max={16} onChange={handleChange} onBlur={handleBlur} />
           </div>
@@ -82,7 +84,7 @@ function CreditCard({ data }: { data: FormT }) {
                   onChange={(e) => setCardState({ ...cardState, name: e.target.value.toLocaleUpperCase() })} />
               </div>
               <div className="pull-right">
-                <div className="mk-icon-visa"><img src='/src/assets/Visa-Payment-Card.svg' width='100%' /></div>
+                <div className="mk-icon-visa"><img src={visaCard} width='100%' /></div>
               </div>
             </div>
           </footer>
