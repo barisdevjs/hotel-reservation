@@ -26,13 +26,13 @@ function HotelAndDate({ data, setData, updateFields }: HotelProps) {
           name="hotel_name"
           label="Select Hotel"
           rules={[
-            { required: true},
+            { required: true },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (value && value.trim()) {
                   return Promise.resolve();
                 }
-                return Promise.reject(new Error( 'Please select a hotel'));
+                return Promise.reject(new Error('Please select a hotel'));
               },
             }),
           ]}
@@ -56,13 +56,16 @@ function HotelAndDate({ data, setData, updateFields }: HotelProps) {
       <Col >
         <Form.Item name="startDate" label="Start Date" rules={[{ required: true }]}>
           <DatePicker value={dayjs(data.startDate)} placeholder="Start Date"
-            onChange={(date, dateString) => onDateChange('startDate', date as Dayjs)} />
+            onChange={(date, dateString) => onDateChange('startDate', dayjs(dateString))} />
         </Form.Item>
       </Col>
       <Col >
         <Form.Item name="endDate" label="End Date" rules={[{ required: true }]}>
+          {/* <DatePicker value={dayjs(data.endDate)} placeholder="End Date"
+            onChange={(date, dateString) => onDateChange('endDate', date as Dayjs)} /> */}
+
           <DatePicker value={dayjs(data.endDate)} placeholder="End Date"
-            onChange={(date, dateString) => onDateChange('endDate', date as Dayjs)} />
+            onChange={(date, dateString) => onDateChange('endDate', dayjs(dateString))} />
         </Form.Item>
       </Col>
       <Col>
