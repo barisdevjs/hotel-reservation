@@ -89,3 +89,15 @@ export type HotelT = {
     handleOk: () => void;
     handleCancel: () => void; 
   }
+
+  export type ErrorFields<T = any> = {
+    errorFields: Array<{
+        name: Array<string>,
+        errors: Array<string>,
+        warnings: Array<string>
+    }>,
+    outOfDate: boolean,
+    values: {
+        [key: string]: T | undefined
+    }
+}

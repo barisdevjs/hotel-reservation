@@ -16,7 +16,7 @@ export function useSessionStorage<T>(key: string, initialValue: T | (() => T)){
         sessionStorage.setItem(key, JSON.stringify(value))
     }, [key,value])
 
-    const resetValue = () => {
+    const resetValue = (key : string) => {
         sessionStorage.setItem(key, JSON.stringify(initialValue));
         setValue(initialValue);
     };

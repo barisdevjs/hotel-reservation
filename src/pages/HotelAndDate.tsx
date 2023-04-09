@@ -3,7 +3,7 @@ import { Form, Select } from 'antd';
 import { useGetHotelList } from "../services/Services";
 import { DatePicker } from 'antd';
 import * as dayjs from 'dayjs'
-import { FormT, HotelProps } from "../utils/types";
+import { HotelProps } from "../utils/types";
 import { Dayjs } from 'dayjs';
 
 
@@ -21,10 +21,21 @@ function HotelAndDate({ data, setData, updateFields }: HotelProps) {
   return (
     <Row gutter={[32, 32]} justify="space-between">
       <Col >
-        <Form.Item style={{minWidth:'10rem'}}
+        <Form.Item
+          style={{ minWidth: '10rem' }}
           name="hotel_name"
           label="Select Hotel"
-          rules={[{ required: true }]}
+          rules={[
+            { required: true},
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (value && value.trim()) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error( 'Please select a hotel'));
+              },
+            }),
+          ]}
         >
           <Select
             placeholder="Please Select Your Hotel From Options"
@@ -55,8 +66,8 @@ function HotelAndDate({ data, setData, updateFields }: HotelProps) {
         </Form.Item>
       </Col>
       <Col>
-        <Form.Item name='parents' label="Parents" 
-        rules={[{ required: true },  {type:'number', max:data.max_adult_size, message:`${data.hotel_name} can not accept more than ${data.max_adult_size} adults`}]}>
+        <Form.Item name='parents' label="Parents"
+          rules={[{ required: true }, { type: 'number', max: data.max_adult_size, message: `${data.hotel_name} can not accept more than ${data.max_adult_size} adults` }]}>
           <InputNumber min={1} onChange={(value) => updateFields({ parents: value as number })} />
         </Form.Item>
       </Col>

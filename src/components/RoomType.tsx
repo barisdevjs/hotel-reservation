@@ -1,4 +1,4 @@
-import { Card, Col, Form, Radio, Row, Divider,  Typography, RadioChangeEvent } from 'antd'
+import { Card, Col, Form, Radio, Row, Divider, Typography, RadioChangeEvent } from 'antd'
 import { useMemo } from 'react';
 import { HotelProps, RoomI } from '../utils/types';
 import { ScenicI } from '../utils/types';
@@ -23,10 +23,10 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
 
     const totalDays = useMemo(() => calculateDays(data.startDate, data.endDate), [data.startDate, data.endDate]);
 
-    function calculatePrice(room: RoomI, totalDays: number, 
-        data: { parents: number, children?: number, selected_scene: ScenicI}) {
-        const price = 
-        room.price * totalDays * data.parents * (data.children ?? 1) * (1 + data.selected_scene.price_rate / 100);
+    function calculatePrice(room: RoomI, totalDays: number,
+        data: { parents: number, children?: number, selected_scene: ScenicI }) {
+        const price =
+            room.price * totalDays * data.parents * (data.children ?? 1) * (1 + data.selected_scene.price_rate / 100);
         return price;
     }
 
@@ -45,7 +45,7 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
 
     return (
         <>
-            <Form.Item label="Room Type Selection" className='font-label' style={{ marginInline: 'auto' }}>
+            <Form.Item label="Room Type Selection" className='font-label' style={{ marginInline: 'auto' }} name="selected_Room" rules={[{ required: true }]}>
                 <Radio.Group onChange={onRoomChange}>
                     <Row gutter={[64, 32]} align='top' justify='space-evenly' style={{ marginInline: 'auto' }}>
                         {rooms.map((room: RoomI) =>
@@ -93,10 +93,10 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
                     </Row>
                 </Radio.Group>
             </Form.Item>
-            <Form.Item label="Room Scene Selection" className='font-label' style={{ marginInline: 'auto' }}>
+            <Form.Item label="Room Scene Selection" className='font-label' style={{ marginInline: 'auto' }} name="selected_Scene" rules={[{ required: true }]}>
                 <Row gutter={[64, 32]} align='middle' justify='space-around' style={{ marginInline: 'auto' }}>
                     <Radio.Group onChange={onSceneChange} buttonStyle="solid"
-                    defaultValue={data.selected_scene.id}>
+                        defaultValue={data.selected_scene.id}>
                         {scenes.map((scene: ScenicI) =>
                             <Radio.Button key={scene.id} value={scene.id}>
                                 <h5 style={{ display: 'flex', justifyContent: 'center' }}>

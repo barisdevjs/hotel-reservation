@@ -1,17 +1,16 @@
-import { Steps, message, Form, Typography } from 'antd'
-import { Button } from 'antd';
+import { useEffect, useState } from "react";
+import { Steps, message, Form, Typography, Button } from 'antd'
 import RoomDetails from "./RoomDetails";
 import Payment from "./Payment";
 import { useNavigation } from "./useNavigation";
-import { useEffect, useState } from "react";
 import dayjs from 'dayjs';
 import HotelAndDate from './HotelAndDate';
-import { FormT, ResultModalI, initialRoom, initialScenic } from '../utils/types';
+import { ErrorFields, FormT, ResultModalI, initialRoom, initialScenic } from '../utils/types';
 import { useSessionStorage } from '../services/useSessionStorage';
 import { useGetHotelById } from '../services/Services';
 import ResultPage from './ResultPage';
-import '../index.css';
 import { initialCart } from '../components/CreditCard';
+import '../index.css';
 
 const initialData: FormT = JSON.parse(sessionStorage.getItem('formData') as string) || {
     id: '',
@@ -22,7 +21,7 @@ const initialData: FormT = JSON.parse(sessionStorage.getItem('formData') as stri
     max_adult_size: 0,
     child_status: false,
     children: null,
-    parents: 0,
+    parents: null,
     city: '',
     possibilities: [],
     room_type: [],
@@ -36,15 +35,13 @@ const initialData: FormT = JSON.parse(sessionStorage.getItem('formData') as stri
 initialData.startDate = dayjs(initialData?.startDate);
 initialData.endDate = dayjs(initialData?.endDate);
 
+
 function Navigation() {
     const [data, setData, resetValue] = useSessionStorage('formData', initialData);
+    const [cardState, setCardState, resetCart] = useSessionStorage('cartData', initialCart);
     const { hotel, getHotel } = useGetHotelById();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = Form.useForm();
-
-  const [cardState, setCardState, reset] = useSessionStorage('cartData',initialCart);
-
-  // reset the card based on SessionStorage
 
 
     useEffect(() => {
@@ -85,6 +82,11 @@ function Navigation() {
         console.log(values);
     }
 
+
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+    };
+
     var INITIAL_STEPS = [
         {
             title: <Typography.Title level={5}>Hotel And Date</Typography.Title >,
@@ -113,13 +115,46 @@ function Navigation() {
         prev();
     }
 
+    function catchErrors(error: ErrorFields) {
+        console.log(error);
+        error.errorFields.forEach((e) => {
+          message.error({ content: `${e.name.join(", ")} can not be empty` });
+        });
+      }
+    async function nextPage(page: number) {
+        switch (page) {
+            case 0:
+                try {
+                    await form.validateFields(['hotel_name', 'parents', 'endDate', 'startDate']);
+                    next();
+                    return true;
+                } catch (error:any) {
+                    catchErrors(error);
+                    return false;
+                }
+            case 1:
+                try {
+                    await form.validateFields(['selected_Room', 'selected_Scene']);
+                    next();
+                    return true;
+                } catch (error: any) {
+                    catchErrors(error);
+                    return false;
+                }
+            default:
+                return false;
+        }
+    }
+
     const showModal = () => {
         setIsModalOpen(true);
     };
 
     const handleOk = () => {
         setIsModalOpen(false);
-        resetValue();
+        resetValue('formData');
+        resetCart('cartData');
+        onFinish();
         form.resetFields();
         goTo(0);
     };
@@ -127,19 +162,21 @@ function Navigation() {
     const handleCancel = () => {
         onFinish();
         setIsModalOpen(false);
+        goTo(0);
     };
 
     const resultProps: ResultModalI = {
         open: isModalOpen,
         handleOk: handleOk,
         handleCancel: handleCancel,
-      };
+    };
 
 
     return (
         <div className=" mx-auto flex max-w-7xl  p-6 lg:px-8" style={{ flexDirection: 'column', rowGap: '2rem' }}>
             <Steps current={current} items={items} labelPlacement='vertical'></Steps>
-            <Form layout="vertical" initialValues={initialData} onFinish={onFinish} form={form} >
+            <Form layout="vertical" initialValues={initialData} onFinish={onFinish} form={form}
+                onFinishFailed={onFinishFailed}>
                 {steps[current].content}
             </Form>
             <div className="flex items-center justify-between">
@@ -147,7 +184,7 @@ function Navigation() {
                     <Button type="primary" htmlType="button" onClick={handlePreviousClick}> Previous</Button>
                 )}
                 {current < steps.length - 1 && (
-                    <Button type="primary" htmlType="button" onClick={next}>Next</Button>
+                    <Button type="primary" htmlType="submit" onClick={() => nextPage(current)} >Next</Button>
                 )}
                 {isLastStep && (
                     <Button type="primary" htmlType="submit" onClick={showModal}>
@@ -155,9 +192,9 @@ function Navigation() {
                     </Button>
                 )}
             </div>
-                    <ResultPage  {...resultProps} />
+            <ResultPage  {...resultProps} />
         </div>
     )
 }
 
-export default Navigation
+export default Navigation 
