@@ -2,7 +2,7 @@ import { Row, Col, InputNumber, Button } from "antd"
 import { Form, Select } from 'antd';
 import { useGetHotelList } from "../services/Services";
 import { DatePicker } from 'antd';
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs';
 import { HotelProps } from "../utils/types";
 import { Dayjs } from 'dayjs';
 
@@ -55,7 +55,9 @@ function HotelAndDate({ data, setData, updateFields }: HotelProps) {
       </Col>
       <Col >
         <Form.Item name="startDate" label="Start Date" rules={[{ required: true }]}>
-          <DatePicker value={dayjs(data.startDate)} placeholder="Start Date"
+          {/* <DatePicker value={dayjs(data.startDate)} placeholder="Start Date"
+            onChange={(date, dateString) => onDateChange('startDate', dayjs(dateString))} /> */}
+                      <DatePicker value={dayjs(data.startDate)} placeholder="Start Date"
             onChange={(date, dateString) => onDateChange('startDate', dayjs(dateString))} />
         </Form.Item>
       </Col>
