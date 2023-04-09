@@ -180,13 +180,13 @@ function Navigation() {
             </Form>
             <div className="flex items-center justify-between">
                 {!isFirstStep && (
-                    <Button type="primary" htmlType="button" onClick={handlePreviousClick}> Previous</Button>
+                    <Button  htmlType="button" onClick={handlePreviousClick}> Previous</Button>
                 )}
                 {current < steps.length - 1 && (
-                    <Button type="primary" htmlType="submit" onClick={() => nextPage(current)} >Next</Button>
+                    <Button  htmlType="submit" onClick={() => nextPage(current)} >Next</Button>
                 )}
                 {isLastStep && (
-                    <Button type="primary" htmlType="submit" onClick={showModal}>
+                    <Button  htmlType="submit" onClick={showModal}>
                         Done
                     </Button>
                 )}
