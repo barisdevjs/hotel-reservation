@@ -44,7 +44,7 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
     }
 
     return (
-        <>
+        <Row >
             <Form.Item label="Room Type Selection" className='font-label' style={{ marginInline: 'auto' }} name="selected_Room" rules={[{ required: true }]}>
                 <Radio.Group onChange={onRoomChange}>
                     <Row gutter={[64, 32]} align='top' justify='space-evenly' style={{ marginInline: 'auto' }}>
@@ -94,9 +94,9 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
                 </Radio.Group>
             </Form.Item>
             <Form.Item label="Room Scene Selection" className='font-label' style={{ marginInline: 'auto' }} name="selected_Scene" rules={[{ required: true }]}>
-                <Row gutter={[64, 32]} align='middle' justify='space-around' style={{ marginInline: 'auto' }}>
+                <Row gutter={[64, 32]} align='middle' justify='space-around' style={{ marginInline: 'auto' }} className='mb-12'>
                     <Radio.Group onChange={onSceneChange} buttonStyle="solid"
-                        defaultValue={data.selected_scene.id}>
+                        defaultValue={data.selected_scene.id} className='flex'>
                         {scenes.map((scene: ScenicI) =>
                             <Radio.Button key={scene.id} value={scene.id}>
                                 <h5 style={{ display: 'flex', justifyContent: 'center' }}>
@@ -110,7 +110,7 @@ function RoomType({ data, setData, updateFields }: HotelProps) {
                     </Radio.Group>
                 </Row>
             </Form.Item >
-        </>
+        </Row>
     )
 }
 

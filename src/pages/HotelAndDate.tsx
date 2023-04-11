@@ -53,19 +53,14 @@ function HotelAndDate({ data, setData, updateFields }: HotelProps) {
           </Select>
         </Form.Item>
       </Col>
-      <Col >
-        <Form.Item name="startDate" label="Start Date" rules={[{ required: true }]}>
-          {/* <DatePicker value={dayjs(data.startDate)} placeholder="Start Date"
-            onChange={(date, dateString) => onDateChange('startDate', dayjs(dateString))} /> */}
+      <Col>
+        <Form.Item name="startDate" label="Start Date" rules={[{ required: true }]} >
                       <DatePicker value={dayjs(data.startDate)} placeholder="Start Date"
             onChange={(date, dateString) => onDateChange('startDate', dayjs(dateString))} />
         </Form.Item>
       </Col>
       <Col >
         <Form.Item name="endDate" label="End Date" rules={[{ required: true }]}>
-          {/* <DatePicker value={dayjs(data.endDate)} placeholder="End Date"
-            onChange={(date, dateString) => onDateChange('endDate', date as Dayjs)} /> */}
-
           <DatePicker value={dayjs(data.endDate)} placeholder="End Date"
             onChange={(date, dateString) => onDateChange('endDate', dayjs(dateString))} />
         </Form.Item>

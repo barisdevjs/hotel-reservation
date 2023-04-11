@@ -14,7 +14,7 @@ function RoomDetails({ data, setData, updateFields }: HotelProps) {
 
   return (
     <Space direction="vertical" size="large" className="flex justify-center items-stretch">
-      <Row gutter={[32, 32]} align='bottom' justify='space-around' className="customRow">
+      <Row gutter={[32, 32]} align='bottom' justify='space-around' className="customRow" >
         <Col>
           <Typography.Title level={5}>{data.hotel_name}</Typography.Title>
           <Typography.Text>{data.city}</Typography.Text>
