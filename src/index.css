@@ -28,5 +28,16 @@
 
 /*********************************/
 
+.ant-btn-primary {
+    color: #fff;
+    background-color: #1677ff !important;
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+}
 
+.ant-btn-default.ant-btn-background-ghost {
+    color: #1677ff;
+    background-color: transparent;
+    border-color: #1677ff;
+    box-shadow: none;
+}
 
