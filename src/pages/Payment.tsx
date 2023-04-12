@@ -36,11 +36,11 @@ function Payment({ data, setData, updateFields }: HotelProps) {
 
   return (
     <Watermark content="Hotel SkyKing">
-    <Row gutter={[32, 16]} align='middle' justify='space-between'>
-      <Col md={24} lg={12} xl={12}>
+    <Row gutter={[32, 16]} align='top' justify='center'>
+      <Col md={12} lg={12} xl={12}>
         <CreditCard data={data} />
       </Col>
-      <Col md={24} lg={12} xl={12} >
+      <Col md={18} lg={12} xl={12} >
           <Card title={title} size='small'>
             <Card.Grid style={topCard}>
               <Typography.Text strong >Start Date</Typography.Text>

@@ -1,11 +1,12 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Avatar, Card, Col, Row, Space, Typography } from 'antd';
 import { FormT } from '../utils/types';
 import { useSessionStorage } from '../services/useSessionStorage';
 import '../index.css';
-import './Card.css';
+import './cred.css';
 import visaCard from '../assets/Visa-Payment-Card.svg'
 import creditCardChip from '../assets/credit-card-chip.svg';
+import logo from '../assets/logo.jpg';
 
 interface CardI {
   digits: string
@@ -59,39 +60,16 @@ function CreditCard({ data }: { data: FormT }) {
   }
 
   return (
-    <Card size='small' style={{ border: 'none' }} >
-      <div className="credit-card-wrap">
-        <div className="mk-icon-world-map"></div>
-        <div className="credit-card-inner">
-          <header className="header">
-            <div className="credit-logo">
-              <div className="shape"><span className="txt">PB</span></div> <span className="text">Public Bank of Turkey</span>
-            </div>
-          </header>
-          <div className="mk-icon-sim flex items-center"><img src={creditCardChip} width='100%' /></div>
-          <div className="credit-font credit-card-number" data-text={cardState.digits.slice(0, 4)}>
-            <input value={cardState.digits} type='text' max={16} onChange={handleChange} onBlur={handleBlur} />
-          </div>
-          <footer className="footer">
-            <div className="clearfix">
-              <div className="pull-left">
-                <div className="credit-card-date">
-                  <span className="title">Expires End</span>
-                  <input className='expires-input' value={cardState.expires}
-                    onChange={(e) => setCardState({ ...cardState, expires: e.target.value.replace(/\s/g, '').slice(0, 4) })} onBlur={handleExpiresBlur} />
-                </div>
-                <input className="credit-font credit-author" value={cardState.name.toLocaleUpperCase()}
-                  onChange={(e) => setCardState({ ...cardState, name: e.target.value.toLocaleUpperCase() })} />
-              </div>
-              <div className="pull-right">
-                <div className="mk-icon-visa"><img src={visaCard} width='100%' /></div>
-              </div>
-            </div>
-          </footer>
-        </div>
-      </div>
-    </Card>
-  )
+    <div className="credit-card">
+      <div className="aa">1</div>
+      <div className="bb">2</div>
+      <div className="cc">3</div>
+      <div className="dd">4</div>
+      <div className="ee">5</div>
+    </div>
+  );
+  
+  
 }
 
 export default CreditCard;

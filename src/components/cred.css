@@ -1,0 +1,48 @@
+.credit-card {
+    background-color: #222;
+    border-radius: 1rem;
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: grid;
+    min-width: 365px;
+    max-width: 450px;
+    min-height: 200px;
+    border: 1px solid red;
+    padding: 1rem;
+    grid-template-columns: repeat(5,1fr);
+    grid-template-rows: repeat(5,1fr); 
+    grid-template-areas: 
+    "a a a b b"
+    "a a a b b"
+    "c c c c c"
+    "d d d d d"
+    "e e e e e";
+  }
+  
+
+  .credit-card > .aa {
+    grid-area: a;
+    background-color: rebeccapurple;
+  }
+
+  .credit-card > .bb {
+    grid-area: b;
+    background-color: yellow;
+  }
+
+  .credit-card > .cc {
+    grid-area: c;
+    background-color: yellowgreen;
+  }
+
+  .credit-card > .dd {
+    grid-area: d;
+    background-color: salmon;
+  }
+
+  .credit-card > .ee {
+    grid-area: e;
+    background-color: firebrick;
+  }
+  
+  
