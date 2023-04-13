@@ -161,7 +161,6 @@ function Navigation() {
     const handleCancel = () => {
         onFinish();
         setIsModalOpen(false);
-        goTo(0);
     };
 
     const resultProps: ResultModalI = {
@@ -174,7 +173,7 @@ function Navigation() {
     return (
         <div className=" mx-auto flex max-w-7xl  p-6 lg:px-8" style={{ flexDirection: 'column', rowGap: '2rem' }}>
             <Steps current={current} items={items} labelPlacement='vertical'></Steps>
-            <Form layout="vertical" initialValues={{remember: false}} onFinish={onFinish} form={form}
+            <Form layout="vertical" initialValues={{remember: true}} onFinish={onFinish} form={form}
                 onFinishFailed={onFinishFailed} >
                 {steps[current].content}
             </Form>
